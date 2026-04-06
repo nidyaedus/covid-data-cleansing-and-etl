@@ -1,7 +1,12 @@
 # Project 1: COVID-19 ETL Pipeline
 
-This project is my first end-to-end ETL (Extract, Transform, Load) pipeline. My goal wasn't just to write working code; it was to understand the journey of data from its source,
-through cleansing, to being written to a cloud database, and to learn the best practices along the way.
+This project is my first end-to-end ETL (Extract, Transform, Load) pipeline, built as I step into the world of data engineering. My goal wasn't just to write working code; it was to understand the journey of data from its source, through cleansing, to being written to a cloud database, and to learn the best practices along the way.
+
+## Technologies & Tools Used
+
+* **Python & Pandas:** Used for extracting data from the web and performing complex data transformations and cleansing.
+* **SQLAlchemy:** Used as the database toolkit to establish a secure and reliable connection bridge between the Python environment and the database.
+* **Neon.tech (Serverless PostgreSQL):** Used as the target cloud database. **Why Neon?** I chose Neon because it provides a fully managed, serverless PostgreSQL environment. This eliminated the overhead of installing, configuring, and maintaining a local database server, allowing me to focus entirely on building the data pipeline and experiencing cloud integration.
 
 ## What Did I Learn in This Project?
 
@@ -17,7 +22,6 @@ While building this pipeline, I practically experienced the following concepts:
 
 ### 3. Load (Writing to a Cloud Database)
 * **Security:** Instead of hardcoding my database password, I used the `getpass` library to securely enter it at runtime.
-* **Connection Engine:** I built a secure connection bridge (`engine`) between Python and a cloud-based PostgreSQL database (Neon.tech) using `SQLAlchemy`.
 * **Handling Duplicates:** I grasped the logic behind the `if_exists='replace'` parameter in pandas' `to_sql()` function to prevent duplicate records when loading data.
 
 ### 4. Validation
