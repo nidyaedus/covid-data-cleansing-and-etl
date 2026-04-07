@@ -29,7 +29,7 @@ While building this pipeline, I practically experienced the following concepts:
 
 ---
 
-## 📂 File Structure
+## File Structure
 
 * **`main.ipynb`**: My interactive notebook where I examined the data step-by-step and visually tracked the tables and outputs during the development phase.
 * **`requirements.txt`**: The list of Python libraries required to run the project.
