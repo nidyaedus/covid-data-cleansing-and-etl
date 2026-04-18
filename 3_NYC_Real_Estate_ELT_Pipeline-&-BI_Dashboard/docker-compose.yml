@@ -1,0 +1,38 @@
+version: '3'
+services:
+  # 1. Airflow'un Kendi Hafızası (Metadata DB)
+  postgres_airflow:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    ports:
+      - "5433:5432" # Bilgisayarındaki diğer veritabanlarıyla çakışmaması için 5433'ü kullanıyoruz.
+
+  # 2. Orkestra Şefimiz (Airflow)
+  airflow:
+    image: apache/airflow:2.7.1
+    depends_on:
+      - postgres_airflow
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres_airflow/airflow
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      # Mentor Notu: Airflow'un içinde Pandas ve SQLAlchemy yoktur. Başlarken bunları yüklemesini söylüyoruz!
+      - _PIP_ADDITIONAL_REQUIREMENTS=pandas requests sqlalchemy psycopg2-binary python-dotenv
+    volumes:
+      - ./dags:/opt/airflow/dags   # Senin yazdığın kodları Airflow'un içine köprüler
+      - ./.env:/opt/airflow/.env   # Neon şifremizi Airflow'un içine güvenle aktarır
+    ports:
+      - "8085:8080" # Airflow Arayüzü
+    command: >
+      bash -c "airflow db migrate &&
+      airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
+      airflow webserver & airflow scheduler"
+
+  # 3. Görselleştirme Panelimiz (Metabase)
+  metabase:
+    image: metabase/metabase:latest
+    ports:
+      - "3000:3000" # Metabase Arayüzü
